@@ -9,8 +9,8 @@ for n = 1:length(temp)
   if isdir(temp(n).name) && not(any(strcmpi(temp(n).name,{'.','..'})))
     try 
       common = setfield(common,temp(n).name,fullfile(common.base,temp(n).name));
-    except
-      fprintf('    Ignoring directory %s', temp(n).name);
+    catch
+      fprintf('    Ignoring directory %s\n', temp(n).name);
     end
   end
 end

@@ -5,3 +5,4 @@ function[hs] = handles__()
 
 % This is by default
 hs.base = fileparts(mfilename('fullpath'));
+hs.linalg.base = fullfile(hs.base,'linalg');
