@@ -1,16 +1,10 @@
-% MATLAB File : InputSchema.m
-%
-% * Creation Date : 2009-06-11
-%
-% * Last Modified : Fri 12 Jun 2009 11:51:25 AM EDT
-%
-% * Created By : Akil Narayan
-%
-% * Purpose : Uses Matlab's built-in input parser: returns a schema for the
-%   given variables, defaults, and validators. This is primarily used for
-%   optional inputs. 
-
 function[p] = InputSchema(varnames,defaults,validators,varargin)
+% [P] = INPUTSCHEMA(VARNAMES,DEFAULTS,VALIDATORS,{'KEY','VALUE','KEY','VALUE'...})
+%     Similar to Matlab's built-in input parser, except this method is more
+%     built to emulate Pythons keyword argument syntax. Optionally, the key-val
+%     input sequence can be replaced by a single struct containing the key-vals.
+%
+%     Returns a struct of key-val pairs.
 
 % If no validators are given, just return true as a validator.
 if isempty(validators)
@@ -20,12 +14,35 @@ if isempty(validators)
   end
 end
 
-p = inputParser;
-for n = 1:length(varnames)
-  p.addParamValue(varnames{n},defaults{n},validators{n});
+%%%% Don't use inputParser for Octave compatibility
+p = {};
+for n=1:length(varnames);
+  p = setfield(p,varnames{n},defaults{n});
+end
+if length(varargin)==0
+elseif (length(varargin)==1) && isa(varargin{1},'struct')
+  temp = fieldnames(varargin{1});
+  for n=1:length(temp)
+    p = setfield(p,temp{n},getfield(varargin{1},temp{n}));
+  end
+else
+  N = length(varargin);
+  if mod(N,2)==1
+    error('I can''t parse an odd number of KEY-VALUE inputs');
+  end
+
+  for n = 1:(N/2)
+    p = setfield(p,varargin{2*n-1},varargin{2*n});
+  end
 end
 
+%%%%% OLD WAY %%%%%
+%p = inputParser;
+%for n = 1:length(varnames)
+%  p.addParamValue(varnames{n},defaults{n},validators{n});
+%end
+
 % Prevents matlab from throwing an error if bad inputs are given
-p.KeepUnmatched = true;
-p.parse(varargin{:});
-p = p.Results;
+%p.KeepUnmatched = true;
+%p.parse(varargin{:});
+%p = p.Results;
