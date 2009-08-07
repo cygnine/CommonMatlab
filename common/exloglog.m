@@ -1,6 +1,6 @@
-function[varargout] = exsemilogy(varargin);
+function[varargout] = exloglog(varargin);
 
-% Implements the matlab semilogy function, but does some 
+% Implements the matlab loglog function, but does some 
 % modification of the plot so that it's readable upon
 % export;
 
