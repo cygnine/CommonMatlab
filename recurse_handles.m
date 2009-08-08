@@ -16,8 +16,12 @@ tempdir = pwd;
 for n = 2:length(temp)
   try
     cd(getfield(common,temp{n}));
+    [hs,pathadditions] = handles__();
     handles = setfield(handles,temp{n},...
-                     fhandle(handles__(),fhandle));
+                     fhandle(hs,fhandle));
+    for m = 1:length(pathadditions)
+      addpath(pathadditions{m});
+    end
   catch
     fprintf('    Ignoring directory %s\n', temp{n});
   end
@@ -28,5 +32,3 @@ handles.traversed = true;
 fprintf('Path structure successfully traversed...function handles stored\n');
 
 end
-
-%%%%%%%%%%%%% SUBFUNCTION %%%%%%%%%%%%%%%%
