@@ -1,12 +1,15 @@
 function[x] = triu_sparse_invert(s,b,varargin);
-% [X] = TRIU_SPARSE_INVERT(S,B,{BANDWIDTH=false});
+% [x] = triu_sparse_invert(s,b,{bandwidth=false});
 %
 %     Solves the square system S*X=B for X. S is assumed to be a sparse
-%     upper-triangular matrix with number of diagonals equal to BANDWIDTH. This
-%     is done via sequential back-subsitution. If BANDWIDTH is not given, it is
-%     determined via a call to Matlab's SPDIAGS.  Note that if possible
-%     BANDWIDTH should be given to speed up this function; it's purpose is to
-%     invert the system quickly; calling SPDIAGS is unnecessary overhead.
+%     upper-triangular matrix with number of diagonals equal to bandwidth. This
+%     is done via sequential back-subsitution. If bandwidth is not given, it is
+%     determined via a call to Matlab's spdiags.  Note that if possible
+%     bandwidth should be given to speed up this function; it's purpose is to
+%     invert the system quickly; calling spdiags is unnecessary overhead.
+%
+%     TODO: calling InputSchema's slow too...make it faster by explicit narg
+%     calculations? And fix enigmatic name?
 
 global handles;
 opt = handles.common.InputSchema({'bandwidth'}, {false},[],varargin{:});

@@ -1,7 +1,7 @@
 function[p] = InputSchema(varnames,defaults,validators,varargin)
 % [P] = INPUTSCHEMA(VARNAMES,DEFAULTS,VALIDATORS,{'KEY','VALUE','KEY','VALUE'...})
 %     Similar to Matlab's built-in input parser, except this method is more
-%     built to emulate Pythons keyword argument syntax. Optionally, the key-val
+%     built to emulate Python's keyword argument syntax. Optionally, the key-val
 %     input sequence can be replaced by a single struct containing the key-vals.
 %
 %     Returns a struct of key-val pairs.

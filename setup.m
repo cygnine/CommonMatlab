@@ -17,5 +17,10 @@ end
 
 global handles;
 handles = recurse_handles(common);
+handles.base__ = common.base;
+temp = pwd;
+cd(handles.base__);
+handles.helper = @helper;
+cd(temp);
 
 fprintf('Setup completed successfully\n');
