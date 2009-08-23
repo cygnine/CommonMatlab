@@ -1,0 +1,69 @@
+Contents:
+1.) License
+2.) Setup (PLEASE READ)
+3.) Intended audience
+4.) Development history
+5.) Contact
+
+________________________________________________________________________________
+
+                            1.) License
+________________________________________________________________________________
+
+These Matlab files are released under the MIT License. See the LICENSE file in
+this directory.
+
+Basically do what you want, and don't sue me. And give me credit if any is due.
+
+________________________________________________________________________________
+
+                            2.) Setup
+________________________________________________________________________________
+
+This is a collection of tools for use regarding other Matlab packages (e.g.
+Speclab). In itself it is just a collection of perhaps-useful files. The file
+setup.m will run through all subdirectories found and if a "handles__.m" file
+exists in the subdirectory, it will run through all m-files found in that
+subdirectory and add them as function handles to a matlab-global variable called
+"handles". The handles__.m file in each subdirectory also specifies which
+subdirectories of that subdirectory are to be traversed. 
+
+You may just run 
+>> setup;
+at the command line, and it will perform the necessary operations. The common
+subdirectory contains some m-files that might be useful for programming in
+Matlab in general.
+
+________________________________________________________________________________
+
+                            3.) Intended audience
+________________________________________________________________________________
+
+This module is for use primarily in tandem with another of my released modules,
+e.g. Speclab. It is not really meant to be stand-alone.
+
+________________________________________________________________________________
+                            
+                            4.) Development history
+________________________________________________________________________________
+
+If you'd like the whole development history for this collection, you'll need the
+open-source "distributed version control system" called "git". 
+
+You can clone the repo with the command:
+git clone git://github.com/cygnine/CommonMatlab.git
+
+You may navigate a web browser to http://www.github.com/cygnine/CommonMatlab and
+github will show a pretty GUI of the development history and included files.
+You can also download a tarball directly from github of each repo, but the
+tarball won't have the history. 
+
+________________________________________________________________________________
+                            
+                            5.) Contact
+________________________________________________________________________________
+
+Any comments/suggestions/improvements are welcome. 
+
+Akil Narayan
+anaray@dam.brown.edu
