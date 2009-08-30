@@ -1,4 +1,4 @@
-function[x,varargout] = newton_raphson(x0,f,df,varargin)
+function[x_out,varargout] = newton_raphson(x0,f,df,varargin)
 % [x,termination_reason] = newton_raphson(x0,f,df,{F=zeros(size(x)),fx_tol=1e-12, x_tol=0, maxiter=100})
 %
 %     Finds the roots of the function (handle) f given the initial guesses x0
@@ -29,24 +29,42 @@ defaults = {100, 1e-12, 0, zeros(size(x0))};
 opt = handles.common.InputSchema(inputs, defaults, [], varargin{:});
 
 % setup
+x_out = x0;
 x = x0;
 fx = f(x0) - opt.F;
-converged = abs(fx)<=opt.fx_tol;
-compute = any(not(converged));
+x_converged = false(size(x));
+fx_converged = abs(fx)<=opt.fx_tol;
+to_compute = find(not(fx_converged | x_converged));
+compute = length(to_compute)>0;
 N_iter = 0;
+
+x = x(to_compute);
+fx = fx(to_compute);
+F = opt.F(to_compute);
 
 % iteration
 while compute
   delta_x = fx./df(x);
   x = x - delta_x;
 
-  fx = f(x) - opt.F;
+  fx = f(x) - F;
+
   N_iter = N_iter + 1;
   fx_converged = all(abs(fx)<=opt.fx_tol);
   too_many_iterations = N_iter>=opt.maxiter;
   x_converged = all(abs(delta_x)<=opt.x_tol);
 
-  compute = not(fx_converged) & not(x_converged) & not(too_many_iterations);
+  flags = fx_converged | x_converged;
+  % output
+  x_out(to_compute(flags)) = x(flags);
+  % update
+  x(flags) = [];
+  fx(flags) = [];
+  F(flags) = [];
+  to_compute(flags) = [];
+
+  % matlab convention: any([]) = false
+  compute = any(to_compute) & not(too_many_iterations);
 end
 
 % output termination flag
@@ -57,5 +75,5 @@ elseif x_converged
 elseif too_many_iterations
   varargout{1} = 1;
 else
-  varargoun{1} = NaN;
+  varargout{1} = NaN;
 end

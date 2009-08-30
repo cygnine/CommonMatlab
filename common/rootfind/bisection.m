@@ -1,4 +1,4 @@
-function[x,varargout] = bisection(x0,x1,f,varargin)
+function[x_out,varargout] = bisection(x0,x1,f,varargin)
 % [x,termination_reason] = bisection(x0,x1,f,{F=zeros(size(x)),fx_tol=0, x_tol=1e-12, maxiter=100})
 %
 %     Finds the roots of the function (handle) f given initial bounding
@@ -36,53 +36,54 @@ end
 
 x = (x0+x1)/2;
 fx = f(x) - opt.F;
+x_out = x;
 
 fx_converged = abs(fx)<=opt.fx_tol;
 x_converged = (x1-x0)<opt.x_tol;
-to_compute = find(not(fx_converged) & not(x_converged));
+to_compute = find(not(fx_converged | x_converged));
 compute = length(to_compute)>0;
 N_iter = 0;
 
-fx0_temp = fx0(to_compute);
-fx1_temp = fx1(to_compute);
-fx_temp = fx(to_compute);
-x0_temp = x0(to_compute);
-x1_temp = x1(to_compute);
-x_temp = x(to_compute);
-F_temp = opt.F(to_compute);
+fx0 = fx0(to_compute);
+fx1 = fx1(to_compute);
+fx = fx(to_compute);
+x0 = x0(to_compute);
+x1 = x1(to_compute);
+x = x(to_compute);
+F = opt.F(to_compute);
 
 % iteration
 while compute
-  move_left = sign(fx_temp)==sign(fx1_temp);
+  move_left = sign(fx)==sign(fx1);
   move_right = not(move_left);
 
-  x1_temp(move_left) = x_temp(move_left);
-  x0_temp(move_right) = x_temp(move_right);
-  x_temp = (x0_temp + x1_temp)/2;
-  fx_temp = f(x_temp) - F_temp;
-  fx0_temp(move_right) = f(x0_temp(move_right)) - F_temp(move_right);
-  fx1_temp(move_left) = f(x1_temp(move_left)) - F_temp(move_left);
+  x1(move_left) = x(move_left);
+  x0(move_right) = x(move_right);
+  x = (x0+ x1)/2;
+  fx = f(x) - F;
+  fx0(move_right) = f(x0(move_right)) - F(move_right);
+  fx1(move_left) = f(x1(move_left)) - F(move_left);
 
-  fx_converged = abs(fx_temp)<=opt.fx_tol;
-  x_converged = (x1_temp - x0_temp)<=opt.x_tol;
+  fx_converged = abs(fx)<=opt.fx_tol;
+  x_converged = (x1- x0)<=opt.x_tol;
   N_iter = N_iter + 1;
   too_many_iterations = N_iter>=opt.maxiter;
 
   flags = fx_converged | x_converged;
   % Output
-  x(to_compute(flags)) = x_temp(flags);
+  x_out(to_compute(flags)) = x(flags);
   % Update:
-  flags = ~flags;
-  x1_temp = x1_temp(flags);
-  x0_temp = x0_temp(flags);
-  fx1_temp = fx1_temp(flags);
-  fx0_temp = fx0_temp(flags);
-  x_temp = x_temp(flags);
-  fx_temp = fx_temp(flags);
-  F_temp = F_temp(flags);
-  to_compute = to_compute(flags);
+  x1(flags) = [];
+  x0(flags) = [];
+  fx1(flags) = [];
+  fx0(flags) = [];
+  x(flags) = [];
+  fx(flags) = [];
+  F(flags) = [];
+  to_compute(flags) = [];
 
-  compute = length(to_compute)>0 & not(too_many_iterations);
+  % matlab convention: any([]) = false
+  compute = any(to_compute) & not(too_many_iterations);
 end
 
 % output termination flag
@@ -93,5 +94,5 @@ elseif all(x_converged)
 elseif too_many_iterations
   varargout{1} = 1;
 else
-  varargoun{1} = NaN;
+  varargout{1} = NaN;
 end
