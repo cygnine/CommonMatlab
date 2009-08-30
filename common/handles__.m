@@ -8,5 +8,6 @@ function[hs,pathadditions] = handles__()
 % This is by default
 hs.base = fileparts(mfilename('fullpath'));
 hs.linalg.base = fullfile(hs.base,'linalg');
+hs.rootfind.base = fullfile(hs.base,'rootfind');
 
 pathadditions = cell(0);
