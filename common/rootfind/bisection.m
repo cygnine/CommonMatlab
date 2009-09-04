@@ -30,7 +30,7 @@ opt = handles.common.InputSchema(inputs, defaults, [], varargin{:});
 % setup
 fx0 = f(x0) - opt.F;
 fx1 = f(x1) - opt.F;
-if not(all(sign(fx0).*sign(fx1)==-1))
+if not(all(sign(fx0).*sign(fx1)<1))
   error('You must give me a starting interval containing a simple root');
 end
 
@@ -38,9 +38,19 @@ x = (x0+x1)/2;
 fx = f(x) - opt.F;
 x_out = x;
 
-fx_converged = abs(fx)<=opt.fx_tol;
-x_converged = (x1-x0)<opt.x_tol;
-to_compute = find(not(fx_converged | x_converged));
+fx_converged = abs(fx)<opt.fx_tol;
+left_point = abs(fx0)<opt.fx_tol;
+right_point = abs(fx1)<opt.fx_tol;
+x_converged = abs((x1-x0)./x)<opt.x_tol;
+
+x_out(left_point) = x0(left_point);
+x_out(right_point) = x0(right_point);
+flags = fx_converged | x_converged;
+x_out(flags) = x(flags);
+% The following is to deal with a crappy special case
+fx_converged(left_point | right_point) = true; 
+
+to_compute = find(not(flags | left_point | right_point));
 compute = length(to_compute)>0;
 N_iter = 0;
 
@@ -65,9 +75,9 @@ while compute
   fx1(move_left) = f(x1(move_left)) - F(move_left);
 
   fx_converged = abs(fx)<=opt.fx_tol;
-  x_converged = (x1- x0)<=opt.x_tol;
+  x_converged = abs((x1- x0)./x)<opt.x_tol;
   N_iter = N_iter + 1;
-  too_many_iterations = N_iter>=opt.maxiter;
+  too_many_iterations = N_iter>opt.maxiter;
 
   flags = fx_converged | x_converged;
   % Output
@@ -92,6 +102,7 @@ if all(fx_converged)
 elseif all(x_converged)
   varargout{1} = 3;
 elseif too_many_iterations
+  x_out(to_compute) = x;
   varargout{1} = 1;
 else
   varargout{1} = NaN;

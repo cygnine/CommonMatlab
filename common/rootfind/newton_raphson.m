@@ -33,7 +33,7 @@ x_out = x0;
 x = x0;
 fx = f(x0) - opt.F;
 x_converged = false(size(x));
-fx_converged = abs(fx)<=opt.fx_tol;
+fx_converged = abs(fx)<opt.fx_tol;
 to_compute = find(not(fx_converged | x_converged));
 compute = length(to_compute)>0;
 N_iter = 0;
@@ -50,9 +50,9 @@ while compute
   fx = f(x) - F;
 
   N_iter = N_iter + 1;
-  fx_converged = all(abs(fx)<=opt.fx_tol);
+  fx_converged = abs(fx)<opt.fx_tol;
   too_many_iterations = N_iter>=opt.maxiter;
-  x_converged = all(abs(delta_x)<=opt.x_tol);
+  x_converged = abs(delta_x./x)<opt.x_tol;
 
   flags = fx_converged | x_converged;
   % output
@@ -73,6 +73,7 @@ if fx_converged
 elseif x_converged
   varargout{1} = 3;
 elseif too_many_iterations
+  x_out(to_compute) = x;
   varargout{1} = 1;
 else
   varargout{1} = NaN;
