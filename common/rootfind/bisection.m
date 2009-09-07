@@ -30,9 +30,9 @@ opt = handles.common.InputSchema(inputs, defaults, [], varargin{:});
 % setup
 fx0 = f(x0) - opt.F;
 fx1 = f(x1) - opt.F;
-if not(all(sign(fx0).*sign(fx1)<1))
-  error('You must give me a starting interval containing a simple root');
-end
+%if not(all(sign(fx0).*sign(fx1)<1))
+%  error('You must give me a starting interval containing a simple root');
+%end
 
 x = (x0+x1)/2;
 fx = f(x) - opt.F;
