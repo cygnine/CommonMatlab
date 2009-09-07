@@ -5,6 +5,9 @@ function[] = setup()
 common.base = fileparts(mfilename('fullpath'));
 temp = dir(common.base);
 
+% Adds FunctionNode class
+addpath(fullfile(common.base, 'common', 'classes'));
+
 for n = 1:length(temp)
   if isdir(temp(n).name) && not(any(strcmpi(temp(n).name,{'.','..'})))
     try 
