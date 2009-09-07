@@ -4,9 +4,11 @@ function[varargout] = subsref(self,s);
 
 switch s(1).type
 case '()'
-  for q = 1:nargout
-    varargout{:} = self.handle(s.subs{:});
-  end
+  varargout = cell([abs(nargout(self.handle)) 1]);
+  [varargout{:}] = self.handle(s.subs{:});
+  %for q = 1:nargout
+  %  varargout{:} = self.handle(s.subs{:});
+  %end
 case '.'
   varargout{1} = self.(s.subs);
 otherwise 
