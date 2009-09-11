@@ -1,5 +1,8 @@
-function[p] = InputSchema(varnames,defaults,validators,varargin)
-% [P] = INPUTSCHEMA(VARNAMES,DEFAULTS,VALIDATORS,{'KEY','VALUE','KEY','VALUE'...})
+function[p] = input_schema(varnames,defaults,validators,varargin)
+% input_schema -- Sorts `varargin's lists
+%
+% [p] = input_schema(varnames,defaults,validators,{'key','value','key','value'...})
+%
 %     Similar to Matlab's built-in input parser, except this method is more
 %     built to emulate Python's keyword argument syntax. Optionally, the key-val
 %     input sequence can be replaced by a single struct containing the key-vals.
