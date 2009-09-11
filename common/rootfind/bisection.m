@@ -25,7 +25,7 @@ function[x_out,varargout] = bisection(x0,x1,f,varargin)
 global handles;
 inputs = {'maxiter', 'fx_tol', 'x_tol', 'F'};
 defaults = {100, 0, 1e-12, zeros(size(x0))};
-opt = handles.common.InputSchema(inputs, defaults, [], varargin{:});
+opt = handles.common.input_schema(inputs, defaults, [], varargin{:});
 
 % setup
 fx0 = f(x0) - opt.F;

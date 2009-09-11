@@ -8,11 +8,11 @@ function[x] = triu_sparse_invert(s,b,varargin);
 %     bandwidth should be given to speed up this function; it's purpose is to
 %     invert the system quickly; calling spdiags is unnecessary overhead.
 %
-%     TODO: calling InputSchema's slow too...make it faster by explicit narg
+%     TODO: calling input_schema's slow too...make it faster by explicit narg
 %     calculations? And fix enigmatic name?
 
 global handles;
-opt = handles.common.InputSchema({'bandwidth'}, {false},[],varargin{:});
+opt = handles.common.input_schema({'bandwidth'}, {false},[],varargin{:});
 
 % If bandwidth isn't given, figure it out
 if opt.bandwidth==false

@@ -26,7 +26,7 @@ function[x_out,varargout] = newton_raphson(x0,f,df,varargin)
 global handles;
 inputs = {'maxiter', 'fx_tol', 'x_tol', 'F'};
 defaults = {100, 1e-12, 0, zeros(size(x0))};
-opt = handles.common.InputSchema(inputs, defaults, [], varargin{:});
+opt = handles.common.input_schema(inputs, defaults, [], varargin{:});
 
 % setup
 x_out = x0;
