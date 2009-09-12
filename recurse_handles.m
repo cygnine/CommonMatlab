@@ -18,8 +18,10 @@ tempdir = pwd;
 for n = 2:length(temp)
   try
     cd(getfield(common,temp{n}));
-    [hs,pathadditions] = handles__();
-    handles = setfield(handles,temp{n},...
+    [hs,pathadditions,name] = handles__();
+    %handles = setfield(handles,temp{n},...
+    %                 fhandle(hs,fhandle));
+    handles = setfield(handles,name,...
                      fhandle(hs,fhandle));
     for m = 1:length(pathadditions)
       addpath(pathadditions{m});
