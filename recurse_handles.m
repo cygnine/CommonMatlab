@@ -1,11 +1,13 @@
 function[handles] = recurse_handles(common);
-% HANDLES = RECURSE_HANDLES(COMMON);
-%   Creates a nested structure of function handles. The nested
-%   hierarchy emulates the COMMON input variable exactly. This is meant to
-%   allow the user to call functions nested within this structure without actually
-%   needing to change directories or the MATLAB path.
+% recurse_handles Recurses nested struct of filenames
+%     handles = recurse_handles(common)
 %
-%   Originally, the fhandle approach below was unneccesary
+%     Creates a nested structure of function handles. The nested
+%     hierarchy emulates the COMMON input variable exactly. This is meant to
+%     allow the user to call functions nested within this structure without actually
+%     needing to change directories or the MATLAB path.
+%
+%     Originally, the fhandle approach below was unneccesary
 
 handles = [];
 
@@ -16,8 +18,10 @@ tempdir = pwd;
 for n = 2:length(temp)
   try
     cd(getfield(common,temp{n}));
-    [hs,pathadditions] = handles__();
-    handles = setfield(handles,temp{n},...
+    [hs,pathadditions,name] = handles__();
+    %handles = setfield(handles,temp{n},...
+    %                 fhandle(hs,fhandle));
+    handles = setfield(handles,name,...
                      fhandle(hs,fhandle));
     for m = 1:length(pathadditions)
       addpath(pathadditions{m});

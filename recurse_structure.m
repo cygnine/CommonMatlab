@@ -14,8 +14,10 @@ if isa(node,'char')
   for n = 1:length(mfile_list)
     % The end-2 part is to get rid of ".m"
     mfile_name = mfile_list(n).name(1:end-2);
-    temp_struct = setfield(temp_struct,mfile_name,...
-                           str2func(mfile_name));
+    %temp_struct = setfield(temp_struct,mfile_name,...
+    %                       str2func(mfile_name));
+    temp_struct = setfield(temp_struct, mfile_name, ...
+       FunctionNode(str2func(mfile_name), mfile_name, pwd));
   end
 
   % Return to original directory
@@ -35,8 +37,10 @@ elseif isa(node,'struct')
       for n = 1:length(mfile_list)
         % The end-2 part is to get rid of ".m"
         mfile_name = mfile_list(n).name(1:end-2);
-        temp_struct = setfield(temp_struct,mfile_name,...
-                           str2func(mfile_name));
+        %temp_struct = setfield(temp_struct,mfile_name,...
+        %                   str2func(mfile_name));
+        temp_struct = setfield(temp_struct, mfile_name, ...
+         FunctionNode(str2func(mfile_name), mfile_name, pwd));
       end
       % Return to original directory
       cd(current_directory);
