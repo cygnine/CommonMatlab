@@ -18,7 +18,7 @@ if isempty(validators)
 end
 
 %%%% Don't use inputParser for Octave compatibility
-p = {};
+p = struct();
 for n=1:length(varnames);
   p = setfield(p,varnames{n},defaults{n});
 end
