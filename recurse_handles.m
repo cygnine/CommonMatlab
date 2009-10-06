@@ -15,22 +15,29 @@ handles = [];
 temp = fieldnames(common);
 fhandle = @recurse_structure;
 tempdir = pwd;
+pathadditions = cell(0);
 for n = 2:length(temp)
   try
     cd(getfield(common,temp{n}));
-    [hs,pathadditions,name] = handles__();
+    [hs,newpaths,name] = handles__();
     %handles = setfield(handles,temp{n},...
     %                 fhandle(hs,fhandle));
     handles = setfield(handles,name,...
                      fhandle(hs,fhandle));
-    for m = 1:length(pathadditions)
-      addpath(pathadditions{m});
-    end
+    pathadditions = [pathadditions, newpaths];
+    %for m = 1:length(pathadditions)
+    %  addpath(pathadditions{m});
+    %end
   catch
     fprintf('    Ignoring directory %s\n', temp{n});
   end
 end
 cd(tempdir);
+
+% Now add new paths
+for m = 1:length(pathadditions)
+  addpath(pathadditions{m});
+end
 
 handles.traversed = true;
 fprintf('Path structure successfully traversed...function handles stored\n');
