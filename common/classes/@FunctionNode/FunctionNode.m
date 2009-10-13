@@ -39,6 +39,8 @@ classdef FunctionNode
     function handle = get.handle(self)
       handle = self.handle;
     end
+    
+    [] = inspect(self)
     [] = disp(self);
   end
 end

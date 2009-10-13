@@ -10,6 +10,14 @@ case '()'
   %  varargout{:} = self.handle(s.subs{:});
   %end
 case '.'
+  %if nargout == 0
+  %    feval(self.(s(1).subs));
+  %  return
+  %end
+  if nargout==0
+    self.(s(1).subs);
+    return
+  end
   varargout{1} = self.(s(1).subs);
   if length(s)>1
     if strcmpi(s(2).type, '()')
