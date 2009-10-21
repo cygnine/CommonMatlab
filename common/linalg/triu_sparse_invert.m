@@ -25,7 +25,7 @@ N = length(b);
 x = zeros([N,1]);
 x(N) = b(N)/s(N,N);
 
-for q = (N-1):-1:(N-opt.bandwidth)
+for q = (N-1):-1:max([(N-opt.bandwidth), 1])
   x(q) = (b(q) - s(q,q+1:end)*x(q+1:end))/s(q,q);
 end
 
